@@ -23,6 +23,19 @@ fun! LoadRubyKeybindings()
    set nofoldenable
 endfun
 
+" :Gp changes gem 'hello' to gem 'hello', :path => '../hello'
+" Another :Gp changes it back
+fun! RubyGemfilePathLocal()
+  let line = getline(".")
+  if match(line, ":path") != -1
+    let repl = substitute(line, ', *:path.*$', "", "g")
+    call setline(".", repl)
+  else
+    normal ^^wl"ayiwA, :path => "../"apA
+  endif
+endfun
+command! Gp call RubyGemfilePathLocal()
+
 " These files are also Ruby.
 au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,Vagrantfile,config.ru} set ft=ruby
 
