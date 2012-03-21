@@ -58,3 +58,13 @@ au BufRead,BufNewFile {Capfile,Gemfile,Rakefile,Thorfile,Vagrantfile,config.ru} 
 
 " Specs can be name _scene.rb
 autocmd BufRead,BufNewFile *_scene.rb syn keyword rubyRspec describe context it specify it_should_behave_like before after setup subjectits shared_examples_for shared_context let | highlight def link rubyRspec Function
+
+" Unshouldify a rspec spec
+fun! Unshouldify()
+  silent! %s/\v (["'])should not be/ isn't/gi
+  silent! %s/\v (["'])should not/ \1doesn't/gi
+  silent! %s/\v (["'])should have/ \1has/gi
+  silent! %s/\v (["'])should be/ is/gi
+  silent! %s/\v (["'])should ([^ ]+)/ \1\2s/gi
+endfun
+com! Unshouldify call Unshouldify()
